@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Local Agentic RAG</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#000;
+    color:#fff;
+    font-family:Inter, Arial, sans-serif;
+    min-height:100vh;
+}
+
+.container{
+    max-width:1300px;
+    margin:auto;
+    padding:40px;
+}
+
+.hero{
+    margin-bottom:40px;
+}
+
+.hero h1{
+    font-size:56px;
+    font-weight:700;
+    letter-spacing:-2px;
+    margin-bottom:10px;
+}
+
+.hero p{
+    color:#888;
+    font-size:16px;
+}
+
+.badges{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+.badge{
+    border:1px solid #222;
+    color:#ccc;
+    padding:8px 14px;
+    border-radius:999px;
+    font-size:13px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-bottom:30px;
+}
+
+.stat{
+    border:1px solid #222;
+    border-radius:16px;
+    padding:20px;
+}
+
+.stat h4{
+    color:#888;
+    font-size:12px;
+    text-transform:uppercase;
+    margin-bottom:8px;
+}
+
+.layout{
+    display:grid;
+    grid-template-columns:300px 1fr;
+    gap:25px;
+}
+
+.sidebar{
+    border:1px solid #222;
+    border-radius:20px;
+    padding:25px;
+    height:fit-content;
+}
+
+.sidebar h3{
+    color:#999;
+    font-size:13px;
+    text-transform:uppercase;
+    margin-bottom:15px;
+}
+
+.doc-card{
+    border:1px solid #222;
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:12px;
+    color:#ddd;
+}
+
+.doc-card small{
+    color:#666;
+    display:block;
+    margin-top:6px;
+    font-size:12px;
+}
+
+.main{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+.card{
+    border:1px solid #222;
+    border-radius:20px;
+    padding:30px;
+}
+
+.card h2{
+    margin-bottom:15px;
+}
+
+.supported{
+    color:#888;
+    margin-bottom:20px;
+}
+
+input[type="file"]{
+    color:white;
+    margin-bottom:15px;
+}
+
+input[type="text"]{
+    width:100%;
+    padding:16px;
+    background:#050505;
+    border:1px solid #222;
+    border-radius:12px;
+    color:white;
+    font-size:16px;
+    margin-bottom:15px;
+}
+
+input[type="text"]:focus{
+    outline:none;
+    border-color:#666;
+}
+
+select{
+    width:100%;
+    padding:16px;
+    background:#050505;
+    border:1px solid #222;
+    border-radius:12px;
+    color:white;
+    font-size:16px;
+    margin-bottom:15px;
+}
+
+select:focus{
+    outline:none;
+    border-color:#666;
+}
+
+button{
+    background:white;
+    color:black;
+    border:none;
+    padding:12px 22px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:600;
+}
+
+button:hover{
+    opacity:.85;
+}
+
+.answer-box{
+    margin-top:20px;
+    border:1px solid #222;
+    border-radius:15px;
+    padding:20px;
+    white-space:pre-wrap;
+    line-height:1.8;
+}
+
+.error{
+    color:#ff8b8b;
+}
+
+.verification{
+    color:#aaa;
+    font-size:13px;
+    margin-top:14px;
+}
+
+.label{
+    color:#888;
+    text-transform:uppercase;
+    font-size:12px;
+    letter-spacing:1px;
+    display:block;
+    margin-bottom:10px;
+}
+
+.success{
+    color:#fff;
+}
+
+.plan-box{
+    margin-top:20px;
+    border:1px solid #222;
+    border-radius:15px;
+    padding:20px;
+}
+
+.plan-box ul{
+    margin-left:20px;
+}
+
+.footer{
+    text-align:center;
+    margin-top:40px;
+    color:#666;
+}
+
+@media(max-width:1000px){
+
+    .layout{
+        grid-template-columns:1fr;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .hero h1{
+        font-size:40px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="hero">
+
+    <h1>Local Agentic RAG</h1>
+
+    <p>
+        Multi-document retrieval and reasoning using GPT-OSS, ChromaDB and Ollama.
+    </p>
+
+    <div class="badges">
+
+        <span class="badge">GPT-OSS</span>
+        <span class="badge">ChromaDB</span>
+        <span class="badge">FastAPI</span>
+        <span class="badge">Ollama</span>
+        <span class="badge">Memory</span>
+        <span class="badge">Planner</span>
+
+    </div>
+
+</div>
+
+<div class="stats">
+
+    <div class="stat">
+        <h4>LLM</h4>
+        <p>GPT-OSS</p>
+    </div>
+
+    <div class="stat">
+        <h4>Vector Database</h4>
+        <p>ChromaDB</p>
+    </div>
+
+    <div class="stat">
+        <h4>Framework</h4>
+        <p>FastAPI</p>
+    </div>
+
+</div>
+
+<div class="layout">
+
+    <div class="sidebar">
+
+        <h3>Current Document</h3>
+
+        <div class="doc-card">
+
+            {% if current_document %}
+                {{ current_document }}
+                {% if current_document_id %}
+                <small>ID: {{ current_document_id }}</small>
+                {% endif %}
+            {% else %}
+                No document uploaded
+            {% endif %}
+
+        </div>
+
+        <h3 style="margin-top:25px;">
+            Knowledge Base
+        </h3>
+
+        {% if documents %}
+            {% for doc in documents %}
+            <div class="doc-card">
+                {{ doc.source }}
+                <small>
+                    {% if doc.document_id %}
+                        {{ doc.chunks }} chunks
+                    {% else %}
+                        {{ doc.chunks }} chunks (legacy)
+                    {% endif %}
+                </small>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="doc-card">
+                No documents indexed yet
+            </div>
+        {% endif %}
+
+        <h3 style="margin-top:25px;">
+            Agent Pipeline
+        </h3>
+
+        <div class="doc-card">
+            Upload → Chunk → Embed
+        </div>
+
+        <div class="doc-card">
+            Vector Retrieval
+        </div>
+
+        <div class="doc-card">
+            GPT-OSS Generation
+        </div>
+
+    </div>
+
+    <div class="main">
+
+        <div class="card">
+
+            <h2>Knowledge Base</h2>
+
+            <p class="supported">
+                Supported: PDF • DOCX • PPTX • XML • TXT
+            </p>
+
+            <form
+                action="/upload"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                <input
+                    type="file"
+                    name="file"
+                    required
+                >
+
+                <br>
+
+                <button type="submit">
+                    Upload Document
+                </button>
+
+            </form>
+
+            {% if message %}
+
+            <div class="answer-box">
+
+                <span class="label">
+                    Upload Status
+                </span>
+
+                <p class="success">
+                    {{ message }}
+                </p>
+
+                <br>
+
+                <strong>
+                    Chunks Stored:
+                </strong>
+
+                {{ chunks }}
+
+            </div>
+
+            {% endif %}
+
+            {% if error %}
+
+            <div class="answer-box error">
+                {{ error }}
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        <div class="card">
+
+            <h2>Query Interface</h2>
+
+            <form
+                action="/ask"
+                method="POST"
+            >
+
+                <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+
+                <select name="document">
+                    <option value=""
+                        {% if not selected_document %}selected{% endif %}>
+                        All documents (global search)
+                    </option>
+
+                    {% for doc in documents %}
+                    <option
+                        value="{% if doc.document_id %}{{ doc.document_id }}{% else %}{{ doc.source }}{% endif %}"
+                        {% if selected_document == doc.document_id or selected_document == doc.source %}selected{% endif %}
+                    >
+                        {{ doc.source }}
+                    </option>
+                    {% endfor %}
+                </select>
+
+                <input
+                    type="text"
+                    name="question"
+                    placeholder="Ask about the selected document..."
+                    required
+                >
+
+                <button type="submit">
+                    Ask AI
+                </button>
+
+            </form>
+
+            {% if answer %}
+
+            <div class="answer-box">
+
+                <span class="label">
+                    Question
+                </span>
+
+                {{ question }}
+
+                <br><br>
+
+                <span class="label">
+                    Generated Response
+                </span>
+
+                {{ answer }}
+
+                <p class="verification">
+                    Grounding confidence: {{ confidence }} · Hallucination risk: {{ hallucination_risk }}
+                </p>
+
+            </div>
+
+            {% endif %}
+
+            {% if plan %}
+
+            <div class="plan-box">
+
+                <span class="label">
+                    Execution Plan
+                </span>
+
+                <ul>
+
+                    {% for step in plan %}
+
+                    <li>{{ step }}</li>
+
+                    {% endfor %}
+
+                </ul>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="footer">
+
+    Running Fully Local • GPT-OSS • Ollama • ChromaDB • FastAPI
+
+</div>
+
+</div>
+
+</body>
+</html>
